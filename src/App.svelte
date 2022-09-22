@@ -4,8 +4,6 @@
     createArray();
   });
 
-  const speed = 0.8;
-
   let array: number[] = [];
   let subArray: number[] = [];
   let searchTarget: number;
@@ -18,7 +16,6 @@
   let markerRef: HTMLDivElement;
 
   $: targetDigits = searchTarget?.toString().length;
-  $: found = subArray[guessIndex] === searchTarget && subArray.length > 0;
   $: guessString = `${guessCount}${
     guessCount < 4
       ? guessCount < 3
@@ -29,9 +26,11 @@
       : "th"
   }`;
 
+  // Generates an array and resets values from previouse runs
   function createArray() {
     // Resets
     array = [];
+    searchTarget = undefined;
     guessIndex = undefined;
     guessCount = 0;
     markerRef.style.display = "none";
@@ -45,12 +44,13 @@
         array.push(number);
       }
     }
+    // Array must be sorted
     array.sort((a, b) => a - b);
     // Separate subArray to keep starting values in 'array'
     subArray = array;
-    searchTarget = array[getRandomInt(0, array.length - 1)];
   }
 
+  // Recursive binary search algorithm
   async function search(arr: number[] = array) {
     searching = true;
 
@@ -79,7 +79,8 @@
     // smaller
     if (searchTarget < arr[guessIndex]) {
       hint = "<";
-      await new Promise((r) => setTimeout(r, 1000 * speed));
+      // Delay before next guess
+      await new Promise((r) => setTimeout(r, 1000));
       subArray = [...arr].splice(0, guessIndex);
       return await search(subArray);
     }
@@ -87,13 +88,19 @@
     // bigger
     if (searchTarget > arr[guessIndex]) {
       hint = ">";
-      await new Promise((r) => setTimeout(r, 1000 * speed));
+      // Delay before next guess
+      await new Promise((r) => setTimeout(r, 1000));
       subArray = [...arr].splice(guessIndex + 1, arr.length);
       const rec = await search(subArray);
       return rec === -1 ? -1 : guessIndex + rec;
     }
 
     return -1;
+  }
+
+  function onItemClicked(number: number) {
+    searchTarget = number;
+    search();
   }
 
   function getRandomInt(min: number, max: number): number {
@@ -137,6 +144,8 @@
             !subArray.includes(number) ? " excluded" : ""
           }`}
           bind:this={numberRefs[i]}
+          on:click={() => !searching && !searchTarget && onItemClicked(number)}
+          disabled={searching || !!searchTarget}
         >
           <span class="number-text">{number}</span>
           {#if number === subArray[guessIndex] && number === searchTarget}
@@ -155,11 +164,9 @@
         <span class="guess-text">{guessString} guess</span>
       </div>
     </div>
+    <p class="propmt"><b>Click on an item to search it!</b></p>
     <button on:click={createArray} disabled={searching}
       >Generate sorted array</button
-    >
-    <button on:click={() => search()} disabled={searching || found}
-      >Search</button
     >
   </div>
 </main>
@@ -167,7 +174,7 @@
 <style>
   .numbers {
     display: flex;
-    margin: 10vh 0;
+    margin: 10vh 0 8vh 0;
     justify-content: center;
   }
 
@@ -176,6 +183,14 @@
     margin: 0.2em;
     background-color: #333;
     border-radius: 0.5em;
+    cursor: pointer;
+  }
+
+  .number[disabled="true"] {
+    cursor: default !important;
+  }
+  .number[disabled="false"]:hover {
+    outline: solid 2px white;
   }
 
   .number-text {
@@ -200,7 +215,7 @@
     background-color: #646cff;
     border-radius: 0.5em;
     position: absolute;
-    transition: all 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+    transition: all 1s cubic-bezier(0.19, 1, 0.22, 1);
     justify-content: center;
     align-items: center;
   }
@@ -219,6 +234,10 @@
 
   .excluded {
     background-color: #242424;
+  }
+
+  .propmt {
+    margin-bottom: 5vh;
   }
 
   @media only screen and (max-width: 600px) {
