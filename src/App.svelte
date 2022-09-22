@@ -127,7 +127,7 @@
     <br />
     This animated visualization was created as an excercise for trying out Svlete.
     Code can be viewed
-    <a href="https://github.com/mzbrandl/binary-search-svelte">here.</a>
+    <a href="https://github.com/mzbrandl/binary-search">here.</a>
   </p>
   <div class="card">
     <div class="numbers">
