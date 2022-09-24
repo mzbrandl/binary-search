@@ -1,4 +1,4 @@
-# Binary Search Svelte
+# Binary Search
 
 An animated visualization of a binary search algorithm created with Svelte.
 
