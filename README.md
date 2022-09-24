@@ -6,7 +6,7 @@ An animated visualization of a binary search algorithm created with Svelte.
 
 ```bash
 git clone https://github.com/mzbrandl/binary-search
-cd binary-search-svelte
+cd binary-search
 npm install
 npm run dev
 ```
