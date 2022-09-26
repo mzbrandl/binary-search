@@ -55,7 +55,7 @@
     searching = true;
 
     // Guessing in the middle of the array
-    guessIndex = Math.floor(arr.length / 2);
+    guessIndex = Math.floor((arr.length - 1) / 2);
     guessCount++;
 
     // Move guess marker
@@ -133,8 +133,8 @@
     <br />
     <br />
     This animated visualization was created as an excercise for trying out Svlete.
-    Code can be viewed
-    <a href="https://github.com/mzbrandl/binary-search">here.</a>
+    You can view the source code on
+    <a href="https://github.com/mzbrandl/binary-search">GitHub</a>.
   </p>
   <div class="card">
     <div class="numbers">
@@ -190,7 +190,7 @@
     cursor: default !important;
   }
   .number[disabled="false"]:hover {
-    outline: solid 2px white;
+    outline: solid 2px #646cff;
   }
 
   .number-text {
@@ -199,7 +199,7 @@
   }
 
   .search-target {
-    outline: solid 2px white;
+    outline: solid 2px #646cff;
     border-radius: 0.5em;
   }
 
