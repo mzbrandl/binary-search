@@ -132,7 +132,7 @@
     the array is used to repeat the process until the searched item is found.
     <br />
     <br />
-    This animated visualization was created as an excercise for trying out Svlete.
+    This animated visualization was created as an exercise for trying out Svelte.
     You can view the source code on
     <a href="https://github.com/mzbrandl/binary-search">GitHub</a>.
   </p>
